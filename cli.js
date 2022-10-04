@@ -20,73 +20,9 @@ const State = require('./state')
  */
  const Matrix = require('./matrix')
 
-//Mock AI's
-const getRandomInt = max => Math.floor(Math.random() * max)
-
-const A = {
-    name: 'Algorithm A',
-    playMove(state) {
-
-        /**
-         * Implement your algorithm here.
-         * Some important variables that are available to you:
-         */
-        
-        const opponent = state.color === 'red' ? 'blue' : 'red'
-        //Available / valid moves you are allowed to play
-        const availableMoves = state[state.color].moves
-        //The matrix the AI is able to see
-        const matrix = Matrix.toString(Matrix.fromColor(state.color)(state))
-        //Your pieces
-        const pieces = state[state.color].pieces
-        //Pieces of your opponent that were once visible
-        const visiblePieces = state[opponent].visiblePieces
-        //Positions of your opponent's pieces
-        const opposingPositions = state[opponent].positions
-        //Last moves (made by both players)
-        const lastMoves = state.lastMoves
-        //Readable & copieable state with a max of 10 lastMoves (for debugging).
-        const debugState = State.debug(state) 
-        //Less readable but more compact state (for debugging)
-        const compactState = State.debug(state,0)
-        //Ranks of all the pieces
-        const Rank = require('./ranks')
-        //Get the rank of a single piece
-        const marshal = Rank.marshal()
-        const bomb = Rank.bomb() 
-        
-        //Debugging / Displaying matrix 
-        /*
-        if (state.lastMoves.length > 0) {
-            console.log(visiblePieces)
-            console.log(matrix)
-            console.log('The last moves: ')
-            state.lastMoves.forEach((x) => {
-                console.log(x)
-            })
-
-            //Use 'throw' for stopping script
-            throw 'debug mode for player'
-        }
-        */
-    
-
-        //Play a random move
-        const randomInt = getRandomInt(availableMoves.length)   
-        return availableMoves[randomInt]
-
-        //Or, play the first available move
-        return availableMoves[0]
-    }
-}
-
-const B = {
-    name: 'Algorithm B',
-    playMove(state) {
-        const randomInt = getRandomInt(state[state.color].moves.length)   
-        return state[state.color].moves[randomInt]
-    }
-}
+//AIs
+const A = require('./example-ai')
+const B = require('./basic-ai')
 
 //Assign colors to AI's
 const isRed = Math.random() > 0.5
