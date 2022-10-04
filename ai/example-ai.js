@@ -1,7 +1,29 @@
+/** 
+ * Important information about pieces and gameplay.
+ * 
+ * Special pieces
+ *
+ * flag             ◈  Game is lost when captured.
+ * bomb             ⊗  Can only lose to miners.
+ * scout            ♜  Can jump over empty spaces     
+ * marshal          ⓜ Outranks all pieces, but can be captured by spy
+ * miner            ⚒  Can disable bombs
+ * spy              ⚉  Can capture Marshal, but only when attacking
+ * 
+ * Regular pieces
+ * 
+ * general         9
+ * colonel         8
+ * major           7 
+ * captain         6
+ * lieutenant      5
+ * sergeant        4
+ */
+
 //Matrix, for visualizing the current state
 const Matrix = require('../lib/matrix')
 
-//Ranks of all the pieces
+// Ranks of all the pieces
 const Rank = require('../lib/ranks')
 
 //The name of your AI

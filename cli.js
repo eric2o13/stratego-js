@@ -1,30 +1,9 @@
 const State = require('./internal/state')
-/**
- * Special pieces
- *
- * flag             ◈  Game is lost when captured.
- * bomb             ⊗  Can only lose to miners.
- * scout            ♜  Can jump over empty spaces     
- * marshal          ⓜ Outranks all pieces, but can be captured by spy
- * miner            ⚒  Can disable bombs
- * spy              ⚉  Can capture Marshal, but only when attacking
- * 
- * Regular pieces
- * 
- * general         9
- * colonel         8
- * major           7 
- * captain         6
- * lieutenant      5
- * sergeant        4
- */
- const Matrix = require('./lib/matrix')
+const Matrix = require('./lib/matrix')
 
-//AIs
 const A = require('./ai/example-ai')
 const B = require('./ai/basic-ai')
 
-//Assign colors to AI's
 const isRed = Math.random() > 0.5
 const RED   = isRed ? A : B
 const BLUE  = isRed ? B : A
@@ -51,7 +30,6 @@ const Blue  = state => Object.freeze({
 let state = State.initialState()
     state = State.next(state)
 
-
 const show = () => console.log('\x1Bc' + Matrix.toString(Matrix.fromState(state)))
 const step = () => {
 
@@ -74,6 +52,6 @@ const step = () => {
 
 }
 
-const ms = 100 //Increase if it's too fast
+const ms = 100
 show()
 setInterval(() => { step(); show()},ms)
