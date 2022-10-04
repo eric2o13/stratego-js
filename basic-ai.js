@@ -1,5 +1,3 @@
-const Matrix = require('./matrix')
-
 const name = 'Most Basic Algorithm'
 const playMove = state => {
     //Play the first available move
