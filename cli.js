@@ -1,4 +1,4 @@
-const State = require('./state')
+const State = require('./internal/state')
 /**
  * Special pieces
  *
@@ -18,11 +18,11 @@ const State = require('./state')
  * lieutenant      5
  * sergeant        4
  */
- const Matrix = require('./matrix')
+ const Matrix = require('./lib/matrix')
 
 //AIs
-const A = require('./example-ai')
-const B = require('./basic-ai')
+const A = require('./ai/example-ai')
+const B = require('./ai/basic-ai')
 
 //Assign colors to AI's
 const isRed = Math.random() > 0.5

@@ -1,4 +1,4 @@
-const lib = require('./lib')
+const lib = require('../lib')
 Object.getOwnPropertyNames(lib).map(p => global[p] = lib[p])
 
 //Game play

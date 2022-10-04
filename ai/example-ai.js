@@ -1,8 +1,8 @@
 //Matrix, for visualizing the current state
-const Matrix = require('./matrix')
+const Matrix = require('../lib/matrix')
 
 //Ranks of all the pieces
-const Rank = require('./ranks')
+const Rank = require('../lib/ranks')
 
 //The name of your AI
 const name = 'Example Algorithm'
@@ -51,7 +51,7 @@ const playMove = state => {
     }*/
 
     /**
-     * @param {from: {x,y}, to: {x,y}} move
+     * @param {from: {x: int, y: int}, to: {x: int, y: int}} move
      * @example: Play a random move
      */
     const getRandomInt = max => Math.floor(Math.random() * max)
@@ -59,7 +59,7 @@ const playMove = state => {
     return availableMoves[randomInt]
 
     /**
-     * @param {from: {x,y}, to: {x,y}} move
+     * @param {from: {x: int, y: int}, to: {x: int, y: int}} move
      * @example: Play the first possible move
      */
      return state[state.color].moves[0]
