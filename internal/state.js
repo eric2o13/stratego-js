@@ -37,12 +37,12 @@ Red.pieces = {
             {x: 4, y:6}, {x: 5, y: 6}], //5
     scout: [{x: 1, y: 6}, { x: 0, y: 7}, { x: 1, y: 7}, { x: 2, y: 7},
             {x: 3, y: 7}, { x: 4, y: 7}, { x: 5, y: 7}, { x: 6, y: 7}],//8
-    general: [{ x: 0, y: 8}], //1
+    general: [{x: 0, y: 6}], //1
     spy: [{x: 2, y: 6}],//1
-    marshal: [{x: 0, y: 6}],//1
+    marshal: [{x: 9, y: 8}],//1
     colonel: [{x: 8, y: 9}, {x: 7, y: 6}], //2
     major: [{x: 9, y: 9},{x: 6, y: 6}, {x:7, y: 7}],//3
-    captain: [{x: 9, y: 8}, {x:7, y: 9}, {x:6, y: 9}, {x:7, y:8}],//4
+    captain: [{x: 0, y: 8}, {x:7, y: 9}, {x:6, y: 9}, {x:7, y:8}],//4
     lieutenant: [{x: 8, y: 8}, {x:3,y: 9}, {x:4,y: 9}, {x:5,y: 9}],//4
     sergeant: [{x: 8, y: 7 }, {x: 9, y: 7 }, {x: 9, y: 6 }, {x: 8, y: 6 }]//4
 
@@ -92,12 +92,7 @@ State.nextPotentialEnd = state =>
             winningMove: 'Opposing player ran out of moves'
         }) :
         state
-State.nextPossibleMoves = state => merge(state)({
-    ...state,
-    red: {...state.red, moves: nextPossibleMoves(state)('red')},
-    blue: {...state.blue, moves: nextPossibleMoves(state)('blue')},    
-})
-State.nextPositions = state =>merge(state)({
+State.nextPositions = state => merge(state)({
     ...state,
     red: {...state.red, positions: nextRedPositions(state)},
     blue: {...state.blue, positions: nextBluePositions(state)},
@@ -189,6 +184,12 @@ State.nextClash = state => {
         dropRedPieceFromPosition(pos)(state)
     )
 }
+State.nextPossibleMoves = state => merge(state)({
+    ...state,
+    red: {...state.red, moves: nextPossibleMoves(state)('red')},
+    blue: {...state.blue, moves: nextPossibleMoves(state)('blue')},    
+})
+
 State.nextDeadPieces = state => merge(state)({
     ...state,
     red: {...state.red, deadPieces: nextRedDeadPieces(state)},
@@ -196,12 +197,12 @@ State.nextDeadPieces = state => merge(state)({
 })
 State.next = pipe(
     State.nextPotentialEnd,
-    State.nextPossibleMoves,
-    State.nextPositions,
     State.nextMove,
     State.nextVisiblePieces,
-    State.nextClash,
     State.nextDeadPieces,
+    State.nextPositions,
+    State.nextClash,
+    State.nextPossibleMoves,
 )
  
 
@@ -221,7 +222,7 @@ State.enqueue = (state, move) => {
 }
 
 State.debug = (state, spaces = 4) => {
-    const lastMoves = state.lastMoves.filter((x, i) => i < 9)
+    const lastMoves = state.lastMoves.filter((x, i) => i < 69)
     return JSON.stringify({...state, lastMoves}, null, spaces)
 }
 
