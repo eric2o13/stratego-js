@@ -1,18 +1,19 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
+
 let state = State.initialState()
     state = State.next(state)
 
 const x = c => Math.round(c * canvas.width / state.cols) 
 const y = r => Math.round(r * canvas.height / state.rows)
 
-const board = ctx => {
+const cellWidth = canvas.width / state.cols
+const cellHeight = canvas.height / state.rows
+const yAxis = Array(state.cols).fill('').map((x,i) => cellHeight * i)
+const xAxis = Array(state.rows).fill('').map((x,i) => cellWidth * i)
 
-  const cellWidth = canvas.width / state.cols
-  const cellHeight = canvas.height / state.rows
-  const yAxis = Array(state.cols).fill('').map((x,i) => cellHeight * i)
-  const xAxis = Array(state.rows).fill('').map((x,i) => cellWidth * i)
+const board = ctx => {
 
   ctx.fillStyle = '#232323'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -29,6 +30,19 @@ const board = ctx => {
   return ctx
   
 } 
+
+const coordinates = ctx => {
+  ctx.fillStyle = '#888'
+  ctx.font = "12px Arial";
+
+  [...Array(state.cols).keys()].forEach(X => {
+    [...Array(state.rows).keys()].forEach(Y => {
+      ctx.fillText(`${Y},${X}`, x(X + 0.7), y(Y + 0.95))
+    })
+  })
+  
+  return ctx
+}
 
 const piece = color => name => X => Y => ctx => {
   
@@ -80,6 +94,7 @@ const drawPieces = color => ctx => {
 const draw = () => {
   pipe(
     board,
+    coordinates,
     drawBlocked,
     drawPieces('blue'),
     drawPieces('red'),
@@ -105,6 +120,9 @@ const B = {
 const isRed = Math.random() > 0.5
 const RED   = isRed ? A : B
 const BLUE  = isRed ? B : A
+
+
+  
 const RedState   = state => Object.freeze({
     ...state,
     color: 'red',
@@ -124,32 +142,33 @@ const BlueState  = state => Object.freeze({
     }
 })
 
-const step = () => {
+const step = t1 => t2 => {
+  if (t2 - t1 > 500) { //determines how fast it runs
 
-  if (state.winner) {
-    //Game ended. Not sure what needs to happen now.
-      const AI = state.winner === 'red' ? RED.name : BLUE.name     
-      console.log('winning move:')
-      console.log(state.winningMove)   
-      console.log(`${AI} won the game with the ${state.winner} pieces.`)
-      console.log('Current state')
-      console.log(State.debug(state))
-      throw 'Game over.'
+    if (state.winner) {
+      //Game ended. Not sure what needs to happen now.
+        const AI = state.winner === 'red' ? RED.name : BLUE.name     
+        console.log('winning move:')
+        console.log(state.winningMove)   
+        console.log(`${AI} won the game with the ${state.winner} pieces.`)
+        console.log('Current state')
+        console.log(State.debug(state))
+        throw 'Game over.'
+    }
+  
+    let move = state.redToMove ? 
+        RED.playMove(RedState(state)) :
+        BLUE.playMove(BlueState(state))
+  
+    State.enqueue(state, move)
+    state = State.next(state)
+
+    draw()
+    window.requestAnimationFrame(step(t2))
+  } else {
+    window.requestAnimationFrame(step(t1))
   }
-
-  let move = state.redToMove ? 
-      RED.playMove(RedState(state)) :
-      BLUE.playMove(BlueState(state))
-
-  State.enqueue(state, move)
-  state = State.next(state)
-
 }
 
+requestAnimationFrame(step(0))
 
-const animate = () => {
-  step()  
-  draw()
-  requestAnimationFrame(animate)
-}
-animate()
