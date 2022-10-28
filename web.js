@@ -98,8 +98,8 @@ const drawPieces = color => ctx => {
 const draw = () => {
   pipe(
     board,
-    coordinates,
     drawBlocked,
+    coordinates,
     drawPieces('blue'),
     drawPieces('red'),
   )(ctx)
