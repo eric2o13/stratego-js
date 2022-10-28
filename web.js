@@ -13,6 +13,10 @@ const cellHeight = canvas.height / state.rows
 const yAxis = Array(state.cols).fill('').map((x,i) => cellHeight * i)
 const xAxis = Array(state.rows).fill('').map((x,i) => cellWidth * i)
 
+const CONTROLS = {
+  paused: false
+}
+
 const board = ctx => {
 
   ctx.fillStyle = '#232323'
@@ -143,7 +147,13 @@ const BlueState  = state => Object.freeze({
 })
 
 const step = t1 => t2 => {
+
   if (t2 - t1 > 500) { //determines how fast it runs
+
+    if (CONTROLS.paused) {
+      window.requestAnimationFrame(step(t2))
+      return
+    }
 
     if (state.winner) {
       //Game ended. Not sure what needs to happen now.
