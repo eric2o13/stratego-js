@@ -1,8 +1,11 @@
-const lib = require('../lib')
-Object.getOwnPropertyNames(lib).map(p => global[p] = lib[p])
+if (typeof lib === 'undefined') {
+    const lib = require('../lib')
+    Object.getOwnPropertyNames(lib).map(p => global[p] = lib[p])  
+}
 
 const game = require('./game')
 Object.getOwnPropertyNames(game).map(p => global[p] = game[p])
+
 
 const Blue = {}
 Blue.positions = []

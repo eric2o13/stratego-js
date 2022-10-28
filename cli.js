@@ -52,6 +52,19 @@ const step = () => {
 
 }
 
-const ms = 100
+const readline = require('readline')
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
+process.stdin.on('keypress', (str, key) => {
+  if (key.ctrl && key.name === 'c') {
+    console.log('blue state')
+    console.log(State.debug(Blue(state),0))
+    console.log('red state')
+    console.log(State.debug(Red(state),0))
+    process.exit()
+}
+});
+
+const ms = 10
 show()
 setInterval(() => { step(); show()},ms)
